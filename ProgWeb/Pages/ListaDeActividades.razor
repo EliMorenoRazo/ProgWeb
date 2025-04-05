@@ -1,0 +1,48 @@
+﻿@page "/lista-actividades"
+
+<h3>Lista de Actividades</h3>
+
+<div>
+    <input type="text" @bind="nuevaActividad" placeholder="Ingrese una nueva actividad" />
+    <button @onclick="AgregarActividad">Agregar Actividad</button>
+</div>
+
+@if (actividades.Count > 0)
+{
+    <h4>Actividades por realizar:</h4>
+    <ul>
+        @foreach (var actividad in actividades)
+        {
+            <li>
+                @actividad
+                <button @onclick="() => EliminarActividad(actividad)">Eliminar</button>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No hay actividades por realizar.</p>
+}
+
+@code {
+    private List<string> actividades = new List<string>();
+    private string nuevaActividad;
+
+    private void AgregarActividad()
+    {
+        if (!string.IsNullOrWhiteSpace(nuevaActividad))
+        {
+            actividades.Add(nuevaActividad.Trim());
+            nuevaActividad = string.Empty;
+        }
+    }
+
+    private void EliminarActividad(string actividad)
+    {
+        if (actividades.Contains(actividad))
+        {
+            actividades.Remove(actividad);
+        }
+    }
+}

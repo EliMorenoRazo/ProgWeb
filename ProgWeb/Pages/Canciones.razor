@@ -1,0 +1,137 @@
+﻿@page "/canciones"
+
+<h3>Lista de Canciones</h3>
+
+<div>
+    <input type="text" @bind="nuevoTitulo" placeholder="Agregar título de canción" />
+    <button @onclick="AgregarCancion">Agregar Canción</button>
+</div>
+
+@if (canciones.Count > 0)
+{
+    <h4>Canciones:</h4>
+
+    <div>
+        <label>Filtrar por palabra clave:</label>
+        <input type="text" @bind="filtro" placeholder="Ejemplo: summer" />
+        <button @onclick="AplicarFiltro">Aplicar Filtro</button>
+        <button @onclick="LimpiarFiltro">Limpiar Filtro</button>
+    </div>
+
+    <div>
+        <button @onclick="OrdenarAscendente">Orden Ascendente (A-Z)</button>
+        <button @onclick="OrdenarDescendente">Orden Descendente (Z-A)</button>
+    </div>
+
+    <ul>
+        @foreach (var cancion in cancionesFiltradas)
+        {
+            <li>
+                @if (cancion == cancionAModificar)
+                {
+                    <input type="text" @bind="nuevoTituloModificacion" />
+                    <button @onclick="GuardarModificacion">Guardar</button>
+                    <button @onclick="CancelarModificacion">Cancelar</button>
+                }
+                else
+                {
+                    @cancion
+                    <button @onclick="() => IniciarModificacion(cancion)">Modificar</button>
+                    <button @onclick="() => EliminarCancion(cancion)">Eliminar</button>
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No hay canciones en la lista.</p>
+}
+
+@code {
+    private List<string> canciones = new List<string>();
+    private List<string> cancionesFiltradas = new List<string>();
+
+    private string nuevoTitulo;
+    private string filtro = string.Empty;
+
+    private string cancionAModificar;
+    private string nuevoTituloModificacion;
+
+    protected override void OnInitialized()
+    {
+        cancionesFiltradas = new List<string>(canciones);
+    }
+
+    private void AgregarCancion()
+    {
+        if (!string.IsNullOrWhiteSpace(nuevoTitulo))
+        {
+            canciones.Add(nuevoTitulo.Trim());
+            AplicarFiltro();
+            nuevoTitulo = string.Empty;
+        }
+    }
+
+    private void EliminarCancion(string titulo)
+    {
+        canciones.Remove(titulo);
+        AplicarFiltro();
+    }
+
+    private void IniciarModificacion(string titulo)
+    {
+        cancionAModificar = titulo;
+        nuevoTituloModificacion = titulo;
+    }
+
+    private void GuardarModificacion()
+    {
+        if (!string.IsNullOrWhiteSpace(nuevoTituloModificacion))
+        {
+            int index = canciones.IndexOf(cancionAModificar);
+            if (index != -1)
+            {
+                canciones[index] = nuevoTituloModificacion.Trim();
+            }
+            cancionAModificar = null;
+            AplicarFiltro();
+        }
+    }
+
+    private void CancelarModificacion()
+    {
+        cancionAModificar = null;
+    }
+
+    private void OrdenarAscendente()
+    {
+        canciones.Sort();
+        AplicarFiltro();
+    }
+
+    private void OrdenarDescendente()
+    {
+        canciones.Sort();
+        canciones.Reverse();
+        AplicarFiltro();
+    }
+
+    private void AplicarFiltro()
+    {
+        if (!string.IsNullOrWhiteSpace(filtro))
+        {
+            cancionesFiltradas = canciones.Where(c => c.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        else
+        {
+            cancionesFiltradas = new List<string>(canciones);
+        }
+    }
+
+    private void LimpiarFiltro()
+    {
+        filtro = string.Empty;
+        AplicarFiltro();
+    }
+}
