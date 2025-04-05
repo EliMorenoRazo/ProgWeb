@@ -1,0 +1,47 @@
+﻿@page "/generar-primos"
+
+<h3>Generar Números Primos</h3>
+
+<div>
+    <label>Ingrese un número entero positivo:</label>
+    <input type="number" @bind="NumeroLimite" min="1" />
+</div>
+
+<button @onclick="CalcularPrimos">Generar Primos</button>
+
+@if (ListaPrimos.Any())
+{
+    <h4>Números Primos:</h4>
+    <ul>
+        @foreach (var num in ListaPrimos)
+        {
+            <li>@num</li>
+        }
+    </ul>
+}
+
+@code {
+    private int NumeroLimite { get; set; }
+    private List<int> ListaPrimos { get; set; } = new();
+
+    private void CalcularPrimos()
+    {
+        ListaPrimos.Clear();
+        for (int i = 2; i <= NumeroLimite; i++)
+        {
+            if (EsPrimo(i))
+                ListaPrimos.Add(i);
+        }
+    }
+
+    private bool EsPrimo(int numero)
+    {
+        if (numero < 2) return false;
+        for (int i = 2; i * i <= numero; i++)
+        {
+            if (numero % i == 0)
+                return false;
+        }
+        return true;
+    }
+}

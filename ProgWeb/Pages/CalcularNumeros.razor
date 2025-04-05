@@ -1,0 +1,58 @@
+﻿@page "/calcular-numeros"
+
+<h3>Calcular Pares e Impares</h3>
+
+<div>
+    <label>Ingrese el primer número:</label>
+    <input type="number" @bind="NumeroInicio" />
+</div>
+
+<div>
+    <label>Ingrese el segundo número:</label>
+    <input type="number" @bind="NumeroFin" />
+</div>
+
+<button @onclick="CalcularListas">Calcular</button>
+
+@if (ListaPares.Any() || ListaImpares.Any())
+{
+    <h4>Números Pares:</h4>
+    <ul>
+        @foreach (var num in ListaPares)
+        {
+            <li>@num</li>
+        }
+    </ul>
+
+    <h4>Números Impares:</h4>
+    <ul>
+        @foreach (var num in ListaImpares)
+        {
+            <li>@num</li>
+        }
+    </ul>
+}
+
+@code {
+    private int NumeroInicio { get; set; }
+    private int NumeroFin { get; set; }
+    private List<int> ListaPares { get; set; } = new();
+    private List<int> ListaImpares { get; set; } = new();
+
+    private void CalcularListas()
+    {
+        ListaPares.Clear();
+        ListaImpares.Clear();
+
+        int inicio = Math.Min(NumeroInicio, NumeroFin);
+        int fin = Math.Max(NumeroInicio, NumeroFin);
+
+        for (int i = inicio; i <= fin; i++)
+        {
+            if (i % 2 == 0)
+                ListaPares.Add(i);
+            else
+                ListaImpares.Add(i);
+        }
+    }
+}

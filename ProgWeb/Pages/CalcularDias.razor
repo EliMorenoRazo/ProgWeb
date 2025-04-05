@@ -1,0 +1,34 @@
+﻿@page "/calcular-dias"
+
+<h3>Calcular Días del Mes</h3>
+
+<div>
+    <label>Ingrese un mes (1-12):</label>
+    <input type="number" @bind="MesSeleccionado" min="1" max="12" />
+</div>
+
+<div>
+    <label>Ingrese un año:</label>
+    <input type="number" @bind="AnioIngresado" />
+</div>
+
+<button @onclick="ObtenerDias">Calcular</button>
+
+@if (DiasDelMes > 0)
+{
+    <p>El mes @MesSeleccionado del año @AnioIngresado tiene @DiasDelMes días.</p>
+}
+
+@code {
+    private int MesSeleccionado { get; set; }
+    private int AnioIngresado { get; set; }
+    private int DiasDelMes { get; set; }
+
+    private void ObtenerDias()
+    {
+        if (MesSeleccionado >= 1 && MesSeleccionado <= 12)
+        {
+            DiasDelMes = DateTime.DaysInMonth(AnioIngresado, MesSeleccionado);
+        }
+    }
+}

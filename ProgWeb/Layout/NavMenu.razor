@@ -1,0 +1,46 @@
+﻿<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="mihistoria">
+                <span class="bi bi-journal-text" aria-hidden="true"></span> Mi Historia
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="calcular-dias">
+                <span class="bi bi-calendar-fill" aria-hidden="true"></span> Calcular Días
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="calcular-numeros">
+                <span class="bi bi-list-ol" aria-hidden="true"></span> Calcular Pares/Impares
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="generar-primos">
+                <span class="bi bi-award-fill" aria-hidden="true"></span> Generar Primos
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="calcular-cambio">
+                <span class="bi bi-currency-exchange" aria-hidden="true"></span> Calcular Cambio
+            </NavLink>
+        </div>
+
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

@@ -1,0 +1,40 @@
+﻿@page "/calcular-cambio"
+
+<h3>Conversor de Moneda</h3>
+
+<div>
+    <label>Ingrese la cantidad en pesos mexicanos:</label>
+    <input type="number" @bind="PesosIngresados" min="1" />
+</div>
+
+<button @onclick="ConvertirMoneda">Calcular Cambio</button>
+
+@if (PesosIngresados > 0)
+{
+    <h4>Equivalente en otras monedas:</h4>
+    <ul>
+        <li><strong>Dólares (USD):</strong> @MontoDolares.ToString("F2")</li>
+        <li><strong>Euros (EUR):</strong> @MontoEuros.ToString("F2")</li>
+        <li><strong>Libras Esterlinas (GBP):</strong> @MontoLibras.ToString("F2")</li>
+    </ul>
+}
+
+@code {
+    private decimal PesosIngresados { get; set; } = 0;
+
+    // Definimos los valores de conversión como constantes
+    private const decimal TasaDolar = 16.50m;
+    private const decimal TasaEuro = 18.00m;
+    private const decimal TasaLibra = 21.00m;
+
+    private decimal MontoDolares { get; set; }
+    private decimal MontoEuros { get; set; }
+    private decimal MontoLibras { get; set; }
+
+    private void ConvertirMoneda() // Se cambió el nombre del método
+    {
+        MontoDolares = PesosIngresados / TasaDolar;
+        MontoEuros = PesosIngresados / TasaEuro;
+        MontoLibras = PesosIngresados / TasaLibra;
+    }
+}
